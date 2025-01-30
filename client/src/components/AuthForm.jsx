@@ -2,15 +2,34 @@ import React, { useState } from 'react';
 import AuthLeft from './AuthLeft';
 import AuthFormRight from './AuthFormRight';
 
-const AuthForm = ({ title, subtitle, fields, buttonText, onSubmit, additionalLink }) => {
+const AuthForm = ({ 
+  title, subtitle, fields, buttonText, onSubmit, additionalLink,
+  userType, setUserType, instrument, setInstrument 
+}) => {
+  
   const [formData, setFormData] = useState(
     fields.reduce((acc, field) => ({ ...acc, [field.name]: '' }), {})
   );
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
 
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+  
+    setFormData((prevData) => ({
+      ...prevData,
+      [name]: value,
+    }));
+  
+    if (name === 'userType') {
+      setUserType(value);
+    }
+  
+    if (name === 'instrument') {
+      setInstrument(value);
+    }
+  };
+  
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     onSubmit(formData);

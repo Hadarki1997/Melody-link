@@ -5,12 +5,13 @@ const API_URL = process.env.REACT_APP_API_URL || 'http://localhost:5000/api/auth
 // פונקציה להרשמת משתמש חדש
 export const signup = async (userData) => {
   try {
-    const response = await axios.post(`${API_URL}/signup`, userData);
+    const response = await axios.post(`${API_URL}/signup`, userData); // שולח גם את userType
     return response.data;
   } catch (error) {
     throw error.response ? error.response.data : error.message;
   }
 };
+
 
 // פונקציה להתחברות משתמש קיים
 export const login = async (userData) => {

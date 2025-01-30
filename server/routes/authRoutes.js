@@ -4,36 +4,40 @@ import User from '../models/User.js';
 
 const router = express.Router();
 
-// API להרשמה
 router.post('/signup', async (req, res) => {
     try {
-        console.log('📥 Data received:', req.body); // מדפיס את הנתונים שמגיעים מה-Frontend
-        const { name, email, password } = req.body;
+        console.log("1️⃣ Request body:", JSON.stringify(req.body, null, 2));
         
-        if (!name || !email || !password) {
-            return res.status(400).json({ message: 'All fields are required' });
-        }
-
-        const existingUser = await User.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: 'User already exists' });
-        }
-
+        const { name, email, password, userType, instrument } = req.body;
+        
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new User({ 
-            name: name.toString(), 
-            email: email.toString(), 
-            password: hashedPassword.toString() 
-        });
-
-        await newUser.save();
+        const userData = { 
+            name, 
+            email, 
+            password: hashedPassword, 
+            userType, 
+            instrument 
+        };
+        
+        console.log("2️⃣ User data before creating model:", JSON.stringify(userData, null, 2));
+        
+        const newUser = new User(userData);
+        console.log("3️⃣ New user model:", JSON.stringify(newUser.toObject(), null, 2));
+        
+        const savedUser = await newUser.save();
+        console.log("4️⃣ Saved user:", JSON.stringify(savedUser.toObject(), null, 2));
+        
         res.status(201).json({ message: 'User registered successfully' });
     } catch (error) {
-        console.error('❌ Error in /signup:', error);
-        res.status(500).json({ message: 'Error registering user', error });
+        console.error("❌ Error details:", {
+            name: error.name,
+            message: error.message,
+            stack: error.stack
+        });
+        res.status(500).json({ message: 'Error registering user', error: error.message });
     }
 });
 
 
-// **שימוש ב- export default**
+
 export default router;
