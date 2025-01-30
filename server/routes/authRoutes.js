@@ -9,14 +9,16 @@ router.post('/signup', async (req, res) => {
         console.log("1️⃣ Request body:", JSON.stringify(req.body, null, 2));
         
         const { name, email, password, userType, instrument } = req.body;
-        
+        const role = 'user'; // ✅ ברירת מחדל לכל המשתמשים החדשים
+
         const hashedPassword = await bcrypt.hash(password, 10);
         const userData = { 
             name, 
             email, 
             password: hashedPassword, 
             userType, 
-            instrument 
+            instrument,
+            role
         };
         
         console.log("2️⃣ User data before creating model:", JSON.stringify(userData, null, 2));
@@ -38,6 +40,29 @@ router.post('/signup', async (req, res) => {
     }
 });
 
+router.post('/login', async (req, res) => {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+
+    if (!user) {
+        return res.status(400).json({ message: 'User not found' });
+    }
+
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+        return res.status(400).json({ message: 'Invalid credentials' });
+    }
+
+    res.json({
+        message: 'Login successful',
+        user: {
+            id: user._id,
+            name: user.name,
+            email: user.email,
+            role: user.role // ✅ ודאי שה-role נשלח בתגובה
+        }
+    });
+});
 
 
 export default router;
