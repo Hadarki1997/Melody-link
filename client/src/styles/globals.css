@@ -92,7 +92,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 0.9rem;
+  font-size: 1rem;
   margin-bottom: 20px;
 }
 
@@ -140,4 +140,20 @@ button {
 
 .auth-form a:hover {
   text-decoration: underline;
+}
+
+.custom-select {
+  width: 107%;
+  padding: 12px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 15px;
+  cursor: pointer; /* מצביע לחיץ */
+}
+
+.custom-select:focus {
+  border-color: #007bff; /* שינוי צבע בעת התמקדות */
+  outline: none; /* מסיר את הקו הכחול המובנה של הדפדפן */
+  box-shadow: 0 0 5px rgba(106, 164, 226, 0.5); /* מוסיף היילייט עדין */
 }
