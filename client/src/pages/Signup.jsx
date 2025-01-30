@@ -8,6 +8,7 @@ const Signup = () => {
   const [userType, setUserType] = useState('singer'); // ברירת מחדל - זמר
   const [instrument, setInstrument] = useState(''); // 🎸 כלי נגינה (רק לנגנים)
 
+
   const handleSignupSubmit = async (formData) => {
     setError('');
     setSuccess(false);
@@ -15,6 +16,7 @@ const Signup = () => {
     const userData = {
       ...formData,
       userType,
+      role: 'user', // כאן מתווסף ה-role אם הקליינט לא שולח
       instrument: userType === 'musician' ? instrument : undefined // נשלח רק אם המשתמש מוזיקאי
     };
 
